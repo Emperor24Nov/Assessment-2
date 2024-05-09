@@ -39,9 +39,11 @@ import androidx.navigation.compose.rememberNavController
 import org.d3if3143.mobpro1.R
 import org.d3if3143.mobpro1.ui.theme.Mobpro1Theme
 
+const val KEY_ID_MUSIC = "idMusic"
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MusicScreen(navController: NavHostController) {
+fun MusicScreen(navController: NavHostController, id: Long? = null) {
     var judul by remember { mutableStateOf("") }
     var nama by remember { mutableStateOf("") }
     var tahun by remember { mutableStateOf("") }
@@ -59,7 +61,10 @@ fun MusicScreen(navController: NavHostController) {
                     }
                 },
                 title = {
-                    Text(text = stringResource(id = R.string.tambah_musik))
+                    if (id == null)
+                        Text(text = stringResource(id = R.string.tambah_musik))
+                    else
+                        Text(text = stringResource(id = R.string.edit_musik))
                 },
                 colors = TopAppBarDefaults.mediumTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,

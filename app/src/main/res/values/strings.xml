@@ -1,12 +1,13 @@
 <resources>
-    <string name="app_name">Mobpro 1</string>
-    <string name="list_kosong">Belum ada data</string>
+    <string name="app_name">Band Lab</string>
+    <string name="list_kosong">input the best music according to you!</string>
     <string name="x_diklik">%1$s diklik!</string>
-    <string name="tambah_musik">Tambah musik</string>
+    <string name="tambah_musik">Add music</string>
     <string name="tambah_error">Belum bisa tambah musik.</string>
-    <string name="judul">Nama musik</string>
-    <string name="isi_nama">Nama musisi</string>
-    <string name="isi_tahun">Tahun terbit</string>
-    <string name="kembali">Kembali</string>
-    <string name="simpan">Simpan</string>
+    <string name="judul">Music name</string>
+    <string name="isi_nama">Musician name</string>
+    <string name="isi_tahun">Publication year</string>
+    <string name="kembali">Back</string>
+    <string name="simpan">Save</string>
+    <string name="edit_musik">Edit music</string>
 </resources>
