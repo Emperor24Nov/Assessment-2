@@ -58,7 +58,7 @@ import org.d3if3143.mobpro1.util.ViewModelFactory
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Mainscreen(navController: NavHostController) {
+fun MainScreen(navController: NavHostController) {
     val dataStore = SettingsDataStore(LocalContext.current)
     val showList by dataStore.layoutFlow.collectAsState(initial = true)
 
@@ -242,6 +242,6 @@ fun GridItem(music: Music, onClick: () -> Unit) {
 @Composable
 fun ScreenPreview() {
     Mobpro1Theme {
-        Mainscreen(rememberNavController())
+        MainScreen(rememberNavController())
     }
 }
