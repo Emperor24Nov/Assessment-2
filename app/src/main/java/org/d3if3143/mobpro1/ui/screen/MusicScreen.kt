@@ -8,7 +8,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
@@ -29,12 +34,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import org.d3if3143.mobpro1.R
 import org.d3if3143.mobpro1.ui.theme.Mobpro1Theme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MusicScreen() {
+fun MusicScreen(navController: NavHostController) {
     var judul by remember { mutableStateOf("") }
     var nama by remember { mutableStateOf("") }
     var tahun by remember { mutableStateOf("") }
@@ -42,13 +49,31 @@ fun MusicScreen() {
     Scaffold(
         topBar = {
             TopAppBar(
+                navigationIcon = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = stringResource(R.string.kembali),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                },
                 title = {
                     Text(text = stringResource(id = R.string.tambah_musik))
                 },
                 colors = TopAppBarDefaults.mediumTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.primary,
-                )
+                ),
+                actions = {
+                    IconButton(onClick = { navController.popBackStack() }) {
+                        Icon(
+                            imageVector = Icons.Outlined.Check,
+                            contentDescription = stringResource(R.string.simpan),
+                            tint = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
             )
         }
     ) { padding ->
@@ -111,11 +136,13 @@ fun FormMusic(
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             val options = listOf(
-                "D3IF-46-01",
-                "D3IF-46-02",
-                "D3IF-46-03",
-                "D3IF-46-04",
-                "D3IF-46-05"
+                "Pop",
+                "Rock",
+                "R&B",
+                "Indie",
+                "EDM",
+                "Jazz",
+                "Rhythm and Blues"
             )
             val selectedOptionIndex = remember { mutableStateOf(-1) }
             options.forEachIndexed { index, option ->
@@ -143,6 +170,6 @@ fun FormMusic(
 @Composable
 fun MusicScreenPreview() {
     Mobpro1Theme {
-        MusicScreen()
+        MusicScreen(rememberNavController())
     }
 }

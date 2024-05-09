@@ -37,12 +37,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import org.d3if3143.mobpro1.R
 import org.d3if3143.mobpro1.model.Music
+import org.d3if3143.mobpro1.navigation.Screen
 import org.d3if3143.mobpro1.ui.theme.Mobpro1Theme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Mainscreen(navController: NavHostController) {
-    val context = LocalContext.current
 
     Scaffold(
         topBar = {
@@ -59,7 +59,7 @@ fun Mainscreen(navController: NavHostController) {
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    Toast.makeText(context, R.string.tambah_error, Toast.LENGTH_SHORT).show()
+                    navController.navigate(Screen.FormMusic.route)
                 }
             ) {
                 Icon(

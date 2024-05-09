@@ -7,4 +7,6 @@
     <string name="judul">Nama musik</string>
     <string name="isi_nama">Nama musisi</string>
     <string name="isi_tahun">Tahun terbit</string>
+    <string name="kembali">Kembali</string>
+    <string name="simpan">Simpan</string>
 </resources>

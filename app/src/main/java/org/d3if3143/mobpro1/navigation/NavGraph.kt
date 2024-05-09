@@ -18,7 +18,7 @@ fun SetupNavGraph(navController: NavHostController = rememberNavController()) {
             Mainscreen(navController)
         }
         composable(route = Screen.FormMusic.route) {
-            MusicScreen()
+            MusicScreen(navController)
         }
     }
 }
