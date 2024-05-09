@@ -137,7 +137,8 @@ fun ListItem(music: Music, onClick: () -> Unit) {
         Text(
             text = music.genre,
             maxLines = 1,
-            overflow = TextOverflow.Ellipsis
+            overflow = TextOverflow.Ellipsis,
+            fontWeight = FontWeight.Bold
         )
     }
 }

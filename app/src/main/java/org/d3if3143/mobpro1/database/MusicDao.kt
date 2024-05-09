@@ -18,4 +18,10 @@ interface MusicDao {
 
     @Query("SELECT * FROM music ORDER BY genre DESC")
     fun getMusic(): Flow<List<Music>>
+
+    @Query("SELECT * FROM music WHERE id = :id")
+    suspend fun getMusicById(id: Long): Music?
+
+    @Query("DELETE FROM music WHERE id = :id")
+    suspend fun deleteById(id: Long)
 }

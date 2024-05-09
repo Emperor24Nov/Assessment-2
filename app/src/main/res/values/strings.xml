@@ -10,4 +10,6 @@
     <string name="kembali">Back</string>
     <string name="simpan">Save</string>
     <string name="edit_musik">Edit music</string>
+    <string name="invalid">Field cannot be empty.</string>
+    <string name="hapus">Delete</string>
 </resources>
