@@ -103,8 +103,10 @@ fun MusicScreen(navController: NavHostController, id: Long? = null) {
                         }
                         if (id == null) {
                             viewModel.insert(judul, nama, tahun, genre)
+                            Toast.makeText(context, R.string.konfirmasi_tambah, Toast.LENGTH_LONG).show()
                         } else {
                             viewModel.update(id, judul, nama, tahun, genre)
+                            Toast.makeText(context, R.string.konfirmasi_update, Toast.LENGTH_LONG).show()
                         }
                         navController.popBackStack()
                     }) {

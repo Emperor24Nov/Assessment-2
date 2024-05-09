@@ -10,6 +10,9 @@
     <string name="simpan">Save</string>
     <string name="edit_musik">Edit music</string>
     <string name="invalid">Field cannot be empty.</string>
+    <string name="konfirmasi_hapus">Delete successful</string>
+    <string name="konfirmasi_tambah">Add successful</string>
+    <string name="konfirmasi_update">Update successful</string>
     <string name="hapus">Delete</string>
     <string name="pesan_hapus">Delete this music?</string>
     <string name="tombol_hapus">Delete</string>
