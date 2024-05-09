@@ -33,13 +33,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import org.d3if3143.mobpro1.R
 import org.d3if3143.mobpro1.model.Music
 import org.d3if3143.mobpro1.ui.theme.Mobpro1Theme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Mainscreen() {
+fun Mainscreen(navController: NavHostController) {
     val context = LocalContext.current
 
     Scaffold(
@@ -142,6 +144,6 @@ fun ListItem(music: Music, onClick: () -> Unit) {
 @Composable
 fun ScreenPreview() {
     Mobpro1Theme {
-        Mainscreen()
+        Mainscreen(rememberNavController())
     }
 }
