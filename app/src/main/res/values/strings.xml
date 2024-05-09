@@ -2,4 +2,6 @@
     <string name="app_name">Mobpro 1</string>
     <string name="list_kosong">Belum ada data</string>
     <string name="x_diklik">%1$s diklik!</string>
+    <string name="tambah_musik">Tambah musik</string>
+    <string name="tambah_error">Belum bisa tambah musik.</string>
 </resources>
