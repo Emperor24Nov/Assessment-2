@@ -16,8 +16,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -194,10 +194,10 @@ fun FormMusic(
             }
             Spacer(modifier = Modifier.width(16.dp))
 
-            Button(onClick = {
+            FilledTonalButton(onClick = {
                 if (judul == "" || nama == "" || tahun == "") {
                     Toast.makeText(context, R.string.invalid, Toast.LENGTH_LONG).show()
-                    return@Button
+                    return@FilledTonalButton
                 }
                 if (id == null) {
                     viewModel.insert(judul, nama, tahun, genre)
@@ -238,7 +238,7 @@ fun ClassOption(
 
 @Composable
 fun DeleteAction(delete: () -> Unit) {
-    Button(onClick = { delete() }) {
+    FilledTonalButton(onClick = { delete() }) {
         Text(text = stringResource(R.string.hapus))
     }
 }
