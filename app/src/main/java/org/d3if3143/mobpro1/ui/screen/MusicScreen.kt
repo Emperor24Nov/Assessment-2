@@ -12,8 +12,6 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.outlined.Check
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -22,6 +20,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -96,25 +95,23 @@ fun MusicScreen(navController: NavHostController, id: Long? = null) {
                     titleContentColor = MaterialTheme.colorScheme.primary,
                 ),
                 actions = {
-                    IconButton(onClick = {
+                    TextButton(onClick = {
                         if (judul == "" || nama == "" || tahun == "") {
                             Toast.makeText(context, R.string.invalid, Toast.LENGTH_LONG).show()
-                            return@IconButton
+                            return@TextButton
                         }
                         if (id == null) {
                             viewModel.insert(judul, nama, tahun, genre)
-                            Toast.makeText(context, R.string.konfirmasi_tambah, Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, R.string.konfirmasi_tambah, Toast.LENGTH_LONG)
+                                .show()
                         } else {
                             viewModel.update(id, judul, nama, tahun, genre)
-                            Toast.makeText(context, R.string.konfirmasi_update, Toast.LENGTH_LONG).show()
+                            Toast.makeText(context, R.string.konfirmasi_update, Toast.LENGTH_LONG)
+                                .show()
                         }
                         navController.popBackStack()
                     }) {
-                        Icon(
-                            imageVector = Icons.Outlined.Check,
-                            contentDescription = stringResource(R.string.simpan),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
+                        Text(text = stringResource(R.string.simpan))
                     }
                     if (id != null) {
                         DeleteAction { showDialog = true }
@@ -240,12 +237,8 @@ fun ClassOption(
 
 @Composable
 fun DeleteAction(delete: () -> Unit) {
-    IconButton(onClick = { delete() }) {
-        Icon(
-            imageVector = Icons.Filled.Delete,
-            contentDescription = stringResource(R.string.hapus),
-            tint = MaterialTheme.colorScheme.primary
-        )
+    TextButton(onClick = { delete() }) {
+        Text(text = stringResource(R.string.hapus))
     }
 }
 
