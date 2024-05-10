@@ -2,16 +2,21 @@ package org.d3if3143.mobpro1.ui.screen
 
 import android.content.res.Configuration
 import android.widget.Toast
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,7 +25,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
@@ -31,6 +35,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
@@ -51,26 +56,6 @@ const val KEY_ID_MUSIC = "idMusic"
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MusicScreen(navController: NavHostController, id: Long? = null) {
-    val context = LocalContext.current
-    val db = MusicDb.getinstance(context)
-    val factory = ViewModelFactory(db.dao)
-    val viewModel: DetailViewModel = viewModel(factory = factory)
-
-    var judul by remember { mutableStateOf("") }
-    var nama by remember { mutableStateOf("") }
-    var tahun by remember { mutableStateOf("") }
-    var genre by remember { mutableStateOf("") }
-
-    var showDialog by remember { mutableStateOf(false) }
-
-    LaunchedEffect(true) {
-        if (id == null) return@LaunchedEffect
-        val data = viewModel.getMusic(id) ?: return@LaunchedEffect
-        judul = data.judul
-        nama = data.nama
-        tahun = data.tahun
-        genre = data.genre
-    }
 
     Scaffold(
         topBar = {
@@ -93,62 +78,43 @@ fun MusicScreen(navController: NavHostController, id: Long? = null) {
                 colors = TopAppBarDefaults.mediumTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.primary,
-                ),
-                actions = {
-                    TextButton(onClick = {
-                        if (judul == "" || nama == "" || tahun == "") {
-                            Toast.makeText(context, R.string.invalid, Toast.LENGTH_LONG).show()
-                            return@TextButton
-                        }
-                        if (id == null) {
-                            viewModel.insert(judul, nama, tahun, genre)
-                            Toast.makeText(context, R.string.konfirmasi_tambah, Toast.LENGTH_LONG)
-                                .show()
-                        } else {
-                            viewModel.update(id, judul, nama, tahun, genre)
-                            Toast.makeText(context, R.string.konfirmasi_update, Toast.LENGTH_LONG)
-                                .show()
-                        }
-                        navController.popBackStack()
-                    }) {
-                        Text(text = stringResource(R.string.simpan))
-                    }
-                    if (id != null) {
-                        DeleteAction { showDialog = true }
-                        DisplayAlertDialog(
-                            openDialog = showDialog,
-                            onDismissRequest = { showDialog = false }) {
-                            showDialog = false
-                            viewModel.delete(id)
-                            navController.popBackStack()
-                        }
-                    }
-                }
+                )
             )
         }
     ) { padding ->
         FormMusic(
-            judul = judul,
-            onJudulChange = { judul = it },
-            nama = nama,
-            onNamaChange = { nama = it },
-            tahun = tahun,
-            onTahunChange = { tahun = it },
-            genre = genre,
-            onGenreChange = { genre = it },
-            modifier = Modifier.padding(padding)
+            modifier = Modifier.padding(padding), navController, id
         )
     }
 }
 
 @Composable
 fun FormMusic(
-    judul: String, onJudulChange: (String) -> Unit,
-    nama: String, onNamaChange: (String) -> Unit,
-    tahun: String, onTahunChange: (String) -> Unit,
-    genre: String, onGenreChange: (String) -> Unit,
-    modifier: Modifier
+    modifier: Modifier,
+    navController: NavHostController,
+    id: Long? = null
 ) {
+    val context = LocalContext.current
+    val db = MusicDb.getinstance(context)
+    val factory = ViewModelFactory(db.dao)
+    val viewModel: DetailViewModel = viewModel(factory = factory)
+
+    var showDialog by remember { mutableStateOf(false) }
+
+    var judul by remember { mutableStateOf("") }
+    var nama by remember { mutableStateOf("") }
+    var tahun by remember { mutableStateOf("") }
+    var genre by remember { mutableStateOf("") }
+
+    LaunchedEffect(true) {
+        if (id == null) return@LaunchedEffect
+        val data = viewModel.getMusic(id) ?: return@LaunchedEffect
+        judul = data.judul
+        nama = data.nama
+        tahun = data.tahun
+        genre = data.genre
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -157,7 +123,7 @@ fun FormMusic(
     ) {
         OutlinedTextField(
             value = judul,
-            onValueChange = { onJudulChange(it) },
+            onValueChange = { judul = it },
             label = { Text(text = stringResource(R.string.judul)) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(
@@ -168,7 +134,7 @@ fun FormMusic(
         )
         OutlinedTextField(
             value = nama,
-            onValueChange = { onNamaChange(it) },
+            onValueChange = { nama = it },
             label = { Text(text = stringResource(R.string.isi_nama)) },
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,
@@ -177,7 +143,7 @@ fun FormMusic(
         )
         OutlinedTextField(
             value = tahun,
-            onValueChange = { onTahunChange(it) },
+            onValueChange = { tahun = it },
             label = { Text(text = stringResource(R.string.isi_tahun)) },
             keyboardOptions = KeyboardOptions(
                 capitalization = KeyboardCapitalization.Sentences,
@@ -185,8 +151,9 @@ fun FormMusic(
             modifier = Modifier.fillMaxWidth()
         )
         Column(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(1.dp, Color.Gray, RoundedCornerShape(4.dp))
         ) {
             val radioOptions = listOf(
                 "POP",
@@ -201,15 +168,49 @@ fun FormMusic(
                 ClassOption(
                     label = text,
                     isSelected = genre == text,
-                    onOptionSelected = { onGenreChange(it) },
+                    onOptionSelected = { genre = it },
                     modifier = Modifier
                         .selectable(
                             selected = genre == text,
-                            onClick = { onGenreChange(text) },
+                            onClick = { genre = text },
                             role = Role.RadioButton
                         )
-
                 )
+            }
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            if (id != null) {
+                DeleteAction { showDialog = true }
+                DisplayAlertDialog(
+                    openDialog = showDialog,
+                    onDismissRequest = { showDialog = false }) {
+                    showDialog = false
+                    viewModel.delete(id)
+                    navController.popBackStack()
+                }
+            }
+            Spacer(modifier = Modifier.width(16.dp))
+
+            Button(onClick = {
+                if (judul == "" || nama == "" || tahun == "") {
+                    Toast.makeText(context, R.string.invalid, Toast.LENGTH_LONG).show()
+                    return@Button
+                }
+                if (id == null) {
+                    viewModel.insert(judul, nama, tahun, genre)
+                    Toast.makeText(context, R.string.konfirmasi_tambah, Toast.LENGTH_LONG)
+                        .show()
+                } else {
+                    viewModel.update(id, judul, nama, tahun, genre)
+                    Toast.makeText(context, R.string.konfirmasi_update, Toast.LENGTH_LONG)
+                        .show()
+                }
+                navController.popBackStack()
+            }) {
+                Text(text = stringResource(R.string.simpan))
             }
         }
     }
@@ -237,7 +238,7 @@ fun ClassOption(
 
 @Composable
 fun DeleteAction(delete: () -> Unit) {
-    TextButton(onClick = { delete() }) {
+    Button(onClick = { delete() }) {
         Text(text = stringResource(R.string.hapus))
     }
 }
